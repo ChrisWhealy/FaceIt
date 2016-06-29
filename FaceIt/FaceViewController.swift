@@ -8,31 +8,23 @@
 
 import UIKit
 
+private let π_by_4: CGFloat = CGFloat(M_PI / 4)
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Face controller
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 class FaceViewController: UIViewController {
 
   // Create model instance
-  var expression = FacialExpression(eyes: .Closed, eyeBrows: .Relaxed, mouth: .Smirk) { didSet { updateUI() } }
+  var expression = FacialExpression(eyes: .Open, eyeBrows: 0.0, mouth: 0.0) { didSet { updateUI() } }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Only called once at the start of the view controller's lifecycle
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   @IBOutlet weak var faceView: FaceView! {
     didSet {
-      // Create swipe gesture recognisers for up and down
-      let happierSwipeGestureRecogniser = UISwipeGestureRecognizer(target: self, action: #selector(self.increaseHappiness))
-      let sadderSwipeGestureRecogniser  = UISwipeGestureRecognizer(target: self, action: #selector(self.decreaseHappiness))
-
-      // Configure swipe gesture recognisers to point in the correct direction
-      happierSwipeGestureRecogniser.direction = .Down
-      sadderSwipeGestureRecogniser.direction = .Up
-      
-      // Add gesture recognisers programmatically
+      // Add recogniser for pinch gesture
       faceView.addGestureRecognizer(UIPinchGestureRecognizer(target: faceView, action: #selector(FaceView.changeScale(_:))))
-      faceView.addGestureRecognizer(happierSwipeGestureRecogniser)
-      faceView.addGestureRecognizer(sadderSwipeGestureRecogniser)
 
       // Initial screen draw
       updateUI()
@@ -40,20 +32,36 @@ class FaceViewController: UIViewController {
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Dictionaries to provide concrete implementations of the model's state values
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  private var mouthCurvatures: Dictionary<FacialExpression.Mouth, Double> =
-    [.Frown: -1.0, .Grin: 0.5, .Smile: 1.0, .Smirk: -0.5, .Neutral: 0.0]
-
-  private var eyeBrowTilts: Dictionary<FacialExpression.EyeBrows, Double> =
-    [.Relaxed: 0.5, .Normal: 0.0, .Furrowed: -0.5]
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Change model values based on gesture detection
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  func increaseHappiness() { expression.mouth = expression.mouth.happierMouth() }
-  func decreaseHappiness() { expression.mouth = expression.mouth.sadderMouth() }
+  private func panHeading(thisPoint: CGPoint) -> Double {
+    // Translate the "translationInView" to a heading (in degrees)
+    return thisPoint.x == 0.0        // Any East/West movement?
+           ? thisPoint.y > 0            // No, so check for any North/South movement
+             ? 180.0                       // Due South
+             : 0.0                         // Due North
+           : thisPoint.y == 0.0         // Yes, so check for any North/South movement
+              ? thisPoint.x > 0.0          // Moving East with no North/South?
+                 ? 90.0                       // Yes, due East
+                 : 270.0                      // No, due West
+                                           // Some other direction
+               : acos(Double(thisPoint.y / thisPoint.x)) * 180 / M_PI
+  }
+
+  @IBAction func changeHappiness(recogniser: UIPanGestureRecognizer) {
+    let heading = panHeading(recogniser.translationInView(faceView))
+
+    // Ignore pan headings of due east and due west
+    if heading > 270 || heading < 90 {
+      expression.mouth -= 0.1
+    }
+    else if heading > 90 || heading < 270 {
+      expression.mouth += 0.1
+    }
+
+    expression.mouth = max(-1, min(expression.mouth, 1))
+    recogniser.setTranslation(CGPoint(x:0.0, y:0.0), inView: faceView)
+  }
 
   @IBAction func toggleEyes(recogniser: UITapGestureRecognizer) {
     if recogniser.state == .Ended {
@@ -66,15 +74,9 @@ class FaceViewController: UIViewController {
   }
 
   @IBAction func rotateEyeBrows(recogniser: UIRotationGestureRecognizer) {
-    if recogniser.state == .Ended {
-      let directionIsClockwise = recogniser.rotation > 0 ? true : false
+    expression.eyeBrows = Double(recogniser.rotation / π_by_4)
 
-      switch expression.eyeBrows {
-        case .Furrowed : expression.eyeBrows = directionIsClockwise ? .Normal  : .Furrowed
-        case .Normal   : expression.eyeBrows = directionIsClockwise ? .Relaxed : .Furrowed
-        case .Relaxed  : expression.eyeBrows = directionIsClockwise ? .Relaxed : .Normal
-      }
-    }
+    recogniser.rotation = max(-π_by_4, min(recogniser.rotation, π_by_4))
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,8 +89,8 @@ class FaceViewController: UIViewController {
       case .Squinting : faceView.eyesOpen = false
     }
 
-    faceView.mouthCurvature = mouthCurvatures[expression.mouth] ?? 0.0
-    faceView.eyeBrowTilt    = eyeBrowTilts[expression.eyeBrows] ?? 0.0
+    faceView.mouthCurvature = expression.mouth
+    faceView.eyeBrowTilt = expression.eyeBrows
   }
   
 }

@@ -8,6 +8,17 @@
         <!--Face View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
+                <rotationGestureRecognizer id="ZkJ-qO-4Sy">
+                    <connections>
+                        <action selector="rotateEyeBrows:" destination="BYZ-38-t0r" id="mRm-Wf-T3O"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <tapGestureRecognizer id="G2l-Pe-wtO">
+                    <connections>
+                        <action selector="toggleEyes:" destination="BYZ-38-t0r" id="xon-i1-uIc"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController id="BYZ-38-t0r" customClass="FaceViewController" customModule="FaceIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
@@ -39,6 +50,7 @@
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="G2l-Pe-wtO" appends="YES" id="oLx-Yk-iVQ"/>
                                     <outletCollection property="gestureRecognizers" destination="ZkJ-qO-4Sy" appends="YES" id="dlK-5B-hR9"/>
+                                    <outletCollection property="gestureRecognizers" destination="QTQ-ef-XF9" appends="YES" id="1ZZ-m0-hhx"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -54,17 +66,11 @@
                         <outlet property="faceView" destination="gpw-Nb-gp5" id="ZHW-4s-QdH"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="G2l-Pe-wtO">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="QTQ-ef-XF9">
                     <connections>
-                        <action selector="toggleEyes:" destination="BYZ-38-t0r" id="xon-i1-uIc"/>
+                        <action selector="changeHappiness:" destination="BYZ-38-t0r" id="My9-1y-CC1"/>
                     </connections>
-                </tapGestureRecognizer>
-                <rotationGestureRecognizer id="ZkJ-qO-4Sy">
-                    <connections>
-                        <action selector="rotateEyeBrows:" destination="BYZ-38-t0r" id="mRm-Wf-T3O"/>
-                    </connections>
-                </rotationGestureRecognizer>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="39" y="228"/>
         </scene>

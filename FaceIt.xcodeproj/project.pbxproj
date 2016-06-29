@@ -58,10 +58,10 @@
 		610457E41D1C30E600EB4A37 /* FaceIt */ = {
 			isa = PBXGroup;
 			children = (
+				610457F71D1C315900EB4A37 /* Supporting Files */,
 				610457E71D1C30E700EB4A37 /* FaceViewController.swift */,
 				610457E91D1C30E700EB4A37 /* Main.storyboard */,
 				610457F81D1C323F00EB4A37 /* FaceView.swift */,
-				610457F71D1C315900EB4A37 /* Supporting Files */,
 				61BB142C1D22ACAB001BB83B /* FacialExpression.swift */,
 			);
 			path = FaceIt;

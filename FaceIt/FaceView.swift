@@ -19,8 +19,9 @@ class FaceView: UIView {
   @IBInspectable var mouthCurvature: Double  = 1.0   { didSet { setNeedsDisplay() } }
   @IBInspectable var eyesOpen      : Bool    = true  { didSet { setNeedsDisplay() } }
   @IBInspectable var eyeBrowTilt   : Double  = -0.66 { didSet { setNeedsDisplay() } }
-  @IBInspectable var faceColour    : UIColor = UIColor.blueColor() { didSet { setNeedsDisplay() } }
   @IBInspectable var lineWidth     : CGFloat = 5.0   { didSet { setNeedsDisplay() } }
+
+  @IBInspectable var faceColour : UIColor = UIColor.blueColor() { didSet { setNeedsDisplay() } }
 
   func changeScale(recognizer: UIPinchGestureRecognizer) {
     switch recognizer.state {
@@ -132,9 +133,9 @@ class FaceView: UIView {
     let mouthOffset = skullRadius / Ratios.SkullRadiusToMouthOffset
 
     let mouthRect = CGRect(x: skullCenter.x - mouthWidth/2,
-                            y: skullCenter.y + mouthOffset,
-                            width: mouthWidth,
-                            height: mouthHeight)
+                           y: skullCenter.y + mouthOffset,
+                           width : mouthWidth,
+                           height: mouthHeight)
 
 
     let smileOffset = CGFloat(max(-1, min(mouthCurvature, 1))) * mouthRect.height

@@ -18,30 +18,10 @@ struct FacialExpression {
     case Squinting
   }
 
-  enum EyeBrows: Int {
-    case Relaxed
-    case Normal
-    case Furrowed
-
-    func moreRelaxedBrow()  -> EyeBrows { return EyeBrows(rawValue: rawValue - 1) ?? .Relaxed }
-    func moreFurrowedBrow() -> EyeBrows { return EyeBrows(rawValue: rawValue + 1) ?? .Furrowed }
-  }
-
-  enum Mouth: Int {
-    case Frown
-    case Smirk
-    case Neutral
-    case Grin
-    case Smile
-
-    func sadderMouth()  -> Mouth { return Mouth(rawValue: rawValue - 1) ?? .Frown }
-    func happierMouth() -> Mouth { return Mouth(rawValue: rawValue + 1) ?? .Smile }
-  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Public API
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   var eyes     : Eyes
-  var eyeBrows : EyeBrows
-  var mouth    : Mouth
+  var eyeBrows : Double
+  var mouth    : Double
 }
