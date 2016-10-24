@@ -16,7 +16,7 @@ private let π_by_4: CGFloat = CGFloat(M_PI / 4)
 class FaceViewController: UIViewController {
 
   // Create model instance
-  var expression = FacialExpression(eyes: .Open, eyeBrows: 0.0, mouth: 0.0) { didSet { updateUI() } }
+  var expression = FacialExpression(eyes: .Open, eyeBrows: 0.0, mouth: 0.0) { didSet { updateView() } }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Only called once at the start of the view controller's lifecycle
@@ -27,7 +27,7 @@ class FaceViewController: UIViewController {
       faceView.addGestureRecognizer(UIPinchGestureRecognizer(target: faceView, action: #selector(FaceView.changeScale(_:))))
 
       // Initial screen draw
-      updateUI()
+      updateView()
     }
   }
 
@@ -73,6 +73,48 @@ class FaceViewController: UIViewController {
     }
   }
 
+  private struct Animation {
+    static let shakeAngle    = CGFloat(M_PI / 6)
+    static let shakeDuration = 0.5
+  }
+
+  private func _shakeHead(angle: CGFloat, duration: Double) {
+    UIView.animateWithDuration(
+      duration,
+      animations: {
+        self.faceView.transform = CGAffineTransformRotate(self.faceView.transform, angle)
+       },
+      completion: { finished in
+        if finished {
+          UIView.animateWithDuration(
+            duration,
+            animations: {
+              self.faceView.transform = CGAffineTransformRotate(self.faceView.transform, -angle * 2)
+            },
+            completion: { finished in
+              if finished {
+                UIView.animateWithDuration(
+                  duration,
+                  animations: {
+                    self.faceView.transform = CGAffineTransformRotate(self.faceView.transform, angle)
+                  },
+                  completion: { finished in
+                    if finished {
+                    }
+                  }
+                )
+              }
+            }
+          )
+        }
+      }
+    )
+  }
+
+  @IBAction func shakeHead(sender: UITapGestureRecognizer) {
+    _shakeHead(Animation.shakeAngle, duration: Animation.shakeDuration)
+  }
+
   @IBAction func rotateEyeBrows(recogniser: UIRotationGestureRecognizer) {
     expression.eyeBrows = Double(recogniser.rotation / π_by_4)
 
@@ -82,15 +124,17 @@ class FaceViewController: UIViewController {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Redraw the UI
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  private func updateUI() {
-    switch expression.eyes {
-      case .Open      : faceView.eyesOpen = true
-      case .Closed    : faceView.eyesOpen = false
-      case .Squinting : faceView.eyesOpen = false
-    }
+  private func updateView() {
+    if faceView != nil {
+      switch expression.eyes {
+        case .Open      : faceView.eyesOpen = true
+        case .Closed    : faceView.eyesOpen = false
+        case .Squinting : faceView.eyesOpen = false
+      }
 
-    faceView.mouthCurvature = expression.mouth
-    faceView.eyeBrowTilt = expression.eyeBrows
+      faceView.mouthCurvature = expression.mouth
+      faceView.eyeBrowTilt    = expression.eyeBrows
+    }
   }
   
 }

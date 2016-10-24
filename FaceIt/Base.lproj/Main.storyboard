@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K3h-UL-Tha">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--Face View Controller-->
+        <!--Blinking Face View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <rotationGestureRecognizer id="ZkJ-qO-4Sy">
-                    <connections>
-                        <action selector="rotateEyeBrows:" destination="BYZ-38-t0r" id="mRm-Wf-T3O"/>
-                    </connections>
-                </rotationGestureRecognizer>
-                <tapGestureRecognizer id="G2l-Pe-wtO">
-                    <connections>
-                        <action selector="toggleEyes:" destination="BYZ-38-t0r" id="xon-i1-uIc"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <viewController id="BYZ-38-t0r" customClass="FaceViewController" customModule="FaceIt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="BlinkingFaceViewController" customModule="FaceIt" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -62,17 +51,145 @@
                             <constraint firstItem="gpw-Nb-gp5" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="xDM-LZ-qfc"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="shY-hb-sfd"/>
                     <connections>
                         <outlet property="faceView" destination="gpw-Nb-gp5" id="ZHW-4s-QdH"/>
                     </connections>
                 </viewController>
+                <rotationGestureRecognizer id="ZkJ-qO-4Sy">
+                    <connections>
+                        <action selector="rotateEyeBrows:" destination="BYZ-38-t0r" id="mRm-Wf-T3O"/>
+                    </connections>
+                </rotationGestureRecognizer>
+                <tapGestureRecognizer id="G2l-Pe-wtO">
+                    <connections>
+                        <action selector="shakeHead:" destination="BYZ-38-t0r" id="mXB-Zn-1JY"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <panGestureRecognizer minimumNumberOfTouches="1" id="QTQ-ef-XF9">
                     <connections>
                         <action selector="changeHappiness:" destination="BYZ-38-t0r" id="My9-1y-CC1"/>
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="39" y="228"/>
+            <point key="canvasLocation" x="1428" y="169"/>
+        </scene>
+        <!--Split View Controller-->
+        <scene sceneID="ir5-Bk-aYo">
+            <objects>
+                <splitViewController id="K3h-UL-Tha" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="IW1-oW-MHy" kind="relationship" relationship="masterViewController" id="5SV-qo-aqb"/>
+                        <segue destination="dL1-D8-NUV" kind="relationship" relationship="detailViewController" id="hMP-tg-37O"/>
+                    </connections>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2DU-dE-mrG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1181" y="-312"/>
+        </scene>
+        <!--Emotions-->
+        <scene sceneID="Rb0-gw-J0Y">
+            <objects>
+                <viewController id="uM8-M0-Qlb" customClass="EmotionsViewController" customModule="FaceIt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gUG-I3-rhT"/>
+                        <viewControllerLayoutGuide type="bottom" id="tHQ-pZ-9q3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fLq-g1-uY8">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="t9X-O8-EMd">
+                                <rect key="frame" x="190" y="180" width="221" height="240"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUr-dZ-Qdo">
+                                        <rect key="frame" x="58" y="0.0" width="105" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <state key="normal" title="Angry"/>
+                                        <connections>
+                                            <segue destination="dL1-D8-NUV" kind="showDetail" identifier="Angry" id="76Q-p8-kOn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEA-it-ueW">
+                                        <rect key="frame" x="42" y="60" width="138" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <state key="normal" title="Worried"/>
+                                        <connections>
+                                            <segue destination="dL1-D8-NUV" kind="showDetail" identifier="Worried" id="UWP-hh-7Nu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TZB-nL-hNW">
+                                        <rect key="frame" x="53" y="120" width="116" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <state key="normal" title="Happy"/>
+                                        <connections>
+                                            <segue destination="dL1-D8-NUV" kind="showDetail" identifier="Happy" id="pT1-gf-YoM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1pV-3M-T59">
+                                        <rect key="frame" x="0.0" y="180" width="221" height="60"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                        <state key="normal" title="Mischevious"/>
+                                        <connections>
+                                            <segue destination="dL1-D8-NUV" kind="showDetail" identifier="Mischevious" id="b5j-b9-mNX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="t9X-O8-EMd" firstAttribute="centerX" secondItem="fLq-g1-uY8" secondAttribute="centerX" id="ka4-1e-Cav"/>
+                            <constraint firstItem="t9X-O8-EMd" firstAttribute="centerY" secondItem="fLq-g1-uY8" secondAttribute="centerY" id="qUK-WU-vaD"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Emotions" id="HXf-eG-KIS"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6t4-Pe-HJw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="616" y="-691"/>
+        </scene>
+        <!--Emotions-->
+        <scene sceneID="dk7-r1-axo">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="IW1-oW-MHy" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Emotions" id="ite-nH-UFM"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="kVt-mK-u3R">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="uM8-M0-Qlb" kind="relationship" relationship="rootViewController" id="Rxh-jK-Nld"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mNq-Oa-nbG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-196" y="-691"/>
+        </scene>
+        <!--Face-->
+        <scene sceneID="eD4-Te-BiZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dL1-D8-NUV" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Face" id="eqg-Oi-lss"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qkh-kV-tBF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Enf-Gt-Nxq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZK2-P0-LEK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="616" y="169"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="UWP-hh-7Nu"/>
+    </inferredMetricsTieBreakers>
 </document>
