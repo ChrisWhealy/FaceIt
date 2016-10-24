@@ -11,11 +11,11 @@ import UIKit
 class BlinkingFaceViewController: FaceViewController {
   var blinking = false { didSet { startBlink() } }
 
-  private struct BlinkRate {
-    private static let precInt: UInt32 = 1000
-    private static let precDbl: Double = Double(precInt)
+  fileprivate struct BlinkRate {
+    fileprivate static let precInt: UInt32 = 1000
+    fileprivate static let precDbl: Double = Double(precInt)
 
-    private static func rndNumber() -> Double {
+    fileprivate static func rndNumber() -> Double {
       let v1 = arc4random()
       let v2 = (v1 / precInt) * precInt
       return Double(v1 - v2) / precDbl
@@ -27,10 +27,10 @@ class BlinkingFaceViewController: FaceViewController {
     static let OpenDuration   = 2.5
   }
 
-  private func scheduleBlinkEvent(duration: Double, sel: Selector) {
+  fileprivate func scheduleBlinkEvent(_ duration: Double, sel: Selector) {
     // Whatever selector is received here must be exposed to Objective C.
     // By default, private functions are not exposed to Objective C!
-    NSTimer.scheduledTimerWithTimeInterval(duration,
+    Timer.scheduledTimer(timeInterval: duration,
       target: self,
       selector: sel,
       userInfo: nil,
@@ -39,7 +39,7 @@ class BlinkingFaceViewController: FaceViewController {
 
   // This function is used as a selector for the NSTimer, therefore it must ve visible to the Objective C runtime
   // Hence the @objc directive
-  @objc private func startBlink() {
+  @objc fileprivate func startBlink() {
     if blinking {
       faceView.eyesOpen = false
       scheduleBlinkEvent(BlinkRate.ClosedDuration, sel: #selector(BlinkingFaceViewController.endBlink))
@@ -48,18 +48,18 @@ class BlinkingFaceViewController: FaceViewController {
   
   // This function is used as a selector for the NSTimer, therefore it must ve visible to the Objective C runtime
   // Hence the @objc directive
-  @objc private func endBlink() {
+  @objc fileprivate func endBlink() {
     faceView.eyesOpen = true
     scheduleBlinkEvent(BlinkRate.OpenDuration, sel: #selector(BlinkingFaceViewController.startBlink))
   }
 
-  override func viewDidAppear(animated: Bool) {
+  override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     blinking = true
 
   }
 
-  override func viewWillDisappear(animated: Bool) {
+  override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     blinking = false
   }

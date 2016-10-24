@@ -13,9 +13,9 @@ import Foundation
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 struct FacialExpression {
   enum Eyes: Int {
-    case Open
-    case Closed
-    case Squinting
+    case open
+    case closed
+    case squinting
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
